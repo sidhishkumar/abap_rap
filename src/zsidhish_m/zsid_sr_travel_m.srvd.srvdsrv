@@ -1,0 +1,6 @@
+@EndUserText.label: 'Manage Travel Service definition'
+define service ZSID_SR_TRAVEL_M {
+  expose ZSID_C_TRAVEL_M;
+  expose ZSID_C_BOOKING_M;
+  expose ZSID_C_BSUPPL_M;
+}

@@ -1,0 +1,54 @@
+@Metadata.layer: #CUSTOMER
+@UI.headerInfo: {
+    typeName: 'Booking',
+    typeNamePlural: 'Bookings',
+
+    title: {
+        type: #STANDARD,
+        label: 'Booking',
+        value: 'BookingId'
+
+    }
+}
+@Search.searchable: true
+annotate entity ZSID_C_BOOKING_M with
+{
+
+  @UI.facet: [{ id : 'booking' , position: 10, purpose: #STANDARD, label: 'Booking',  type: #IDENTIFICATION_REFERENCE},
+              { id : 'supplement' , position: 20, purpose: #STANDARD, label: 'Supplement',
+               type: #LINEITEM_REFERENCE, targetElement: '_BookingSupplement'}
+             ]
+  @Search.defaultSearchElement: true
+  TravelId;
+  @UI.lineItem: [{ position: 10 }]
+  @Search.defaultSearchElement: true
+  BookingId;
+  @UI.lineItem: [{ position: 20 }]
+  @UI.identification: [{ position: 10 }]
+  BookingDate;
+
+  @UI.lineItem: [{ position: 30 }]
+  @UI.identification: [{ position: 10 }]
+  @Search.defaultSearchElement: true
+  CustomerId;
+  @UI.lineItem: [{ position: 40 }]
+  @UI.identification: [{ position: 10 }]
+  CarrierId;
+  @UI.lineItem: [{ position: 50 }]
+  @UI.identification: [{ position: 10 }]
+  ConnectionId;
+  @UI.lineItem: [{ position: 60 }]
+  @UI.identification: [{ position: 10 }]
+  FlightDate;
+  @UI.lineItem: [{ position: 70 }]
+  @UI.identification: [{ position: 10 }]
+  FlightPrice;
+  @UI.lineItem: [{ position: 80 }]
+  @UI.identification: [{ position: 10 }]
+  @UI.textArrangement: #TEXT_ONLY
+  BookingStatus;
+
+  //    LastChangedAt;
+
+
+}

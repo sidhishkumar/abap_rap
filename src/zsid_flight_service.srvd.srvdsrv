@@ -1,0 +1,5 @@
+@EndUserText.label: 'Flight Service'
+define service ZSID_FLIGHT_SERVICE {
+  expose ZSID_I_CONNECTION;
+  expose ZSID_I_FLIGHT;
+}

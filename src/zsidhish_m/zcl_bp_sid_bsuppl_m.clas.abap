@@ -1,0 +1,5 @@
+CLASS zcl_bp_sid_bsuppl_m DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zsid_i_travel_m.
+ENDCLASS.
+
+CLASS zcl_bp_sid_bsuppl_m IMPLEMENTATION.
+ENDCLASS.
