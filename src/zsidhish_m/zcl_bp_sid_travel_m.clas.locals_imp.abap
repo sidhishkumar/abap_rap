@@ -20,6 +20,8 @@ CLASS lhc_ZSID_I_TRAVEL_M DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING keys REQUEST requested_features FOR zsid_i_travel_m RESULT result.
     METHODS validate_customer FOR VALIDATE ON SAVE
       IMPORTING keys FOR zsid_i_travel_m~validate_customer.
+    METHODS calculatetotalprice FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR zsid_i_travel_m~calculatetotalprice.
     METHODS earlynumbering_cba_booking FOR NUMBERING
       IMPORTING entities FOR CREATE zsid_i_travel_m\_booking.
     METHODS earlynumbering_create FOR NUMBERING
@@ -242,6 +244,39 @@ CLASS lhc_ZSID_I_TRAVEL_M IMPLEMENTATION.
 
   METHOD reCalculateTotPrice.
 
+    READ ENTITIES OF zsid_i_travel_m IN LOCAL MODE
+    ENTITY zsid_i_travel_m
+    FIELDS ( BookingFee CurrencyCode )
+    WITH CORRESPONDING #( keys )
+    RESULT DATA(li_travel).
+
+    READ ENTITIES OF zsid_i_travel_m IN LOCAL MODE
+    ENTITY zsid_i_travel_m BY \_Booking
+    FIELDS ( FlightPrice CurrencyCode )
+    WITH CORRESPONDING #( li_travel )
+    RESULT DATA(li_booking).
+
+
+    READ ENTITIES OF zsid_i_travel_m IN LOCAL MODE
+    ENTITY zsid_i_booking_m BY \_BookingSupplement
+    FIELDS ( Price CurrencyCode )
+    WITH CORRESPONDING #( li_booking )
+    RESULT DATA(li_bsupplement).
+
+    TYPES : BEGIN OF ty_total,
+            price TYPE /dmo/price,
+            curr TYPE /dmo/currency_code,
+            END OF ty_total.
+
+    data : li_total TYPE TABLE of ty_total.
+
+    LOOP AT li_travel ASSIGNING FIELD-SYMBOL(<ls_travel>).
+
+
+
+    ENDLOOP.
+
+
   ENDMETHOD.
 
   METHOD rejectTravel.
@@ -354,6 +389,13 @@ CLASS lhc_ZSID_I_TRAVEL_M IMPLEMENTATION.
 
       ENDIF.
     ENDLOOP.
+  ENDMETHOD.
+
+  METHOD calculateTotalPrice.
+    MODIFY ENTITIES OF zsid_i_travel_m IN LOCAL MODE
+    ENTITY zsid_i_travel_m
+    EXECUTE reCalculateTotPrice
+    FROM CORRESPONDING #( keys ).
   ENDMETHOD.
 
 ENDCLASS.

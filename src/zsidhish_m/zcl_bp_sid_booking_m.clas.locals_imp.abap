@@ -6,6 +6,8 @@ CLASS lhc_zsid_i_booking_m DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING entities FOR CREATE zsid_i_booking_m\_Bookingsupplement.
     METHODS get_instance_features FOR INSTANCE FEATURES
       IMPORTING keys REQUEST requested_features FOR zsid_i_booking_m RESULT result.
+    METHODS calculatetotalprice FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR zsid_i_booking_m~calculatetotalprice.
 
 ENDCLASS.
 
@@ -90,6 +92,17 @@ CLASS lhc_zsid_i_booking_m IMPLEMENTATION.
 
     )  ).
 
+
+  ENDMETHOD.
+
+  METHOD calculateTotalPrice.
+    DATA : li_travel TYPE STANDARD TABLE OF zsid_i_travel_m WITH UNIQUE HASHED KEY key COMPONENTS TravelId.
+
+    li_travel = CORRESPONDING #( keys DISCARDING DUPLICATES  MAPPING TravelId = TravelId ).
+    MODIFY ENTITIES OF zsid_i_travel_m IN LOCAL MODE
+     ENTITY zsid_i_travel_m
+     EXECUTE reCalculateTotPrice
+     FROM CORRESPONDING #( li_travel ).
 
   ENDMETHOD.
 
